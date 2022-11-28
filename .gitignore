@@ -1,0 +1,4 @@
+*.swp
+*.jar
+__pycache__/
+venv/
