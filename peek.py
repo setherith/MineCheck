@@ -2,7 +2,7 @@ import json
 import zipfile
 
 class Peek:
-    """Will find the version number of server.jar"""
+    """Find the version number of server.jar"""
 
     _version: str
 
@@ -14,7 +14,3 @@ class Peek:
 
     def get_version(self) -> str:
         return self._version
-
-if __name__ == "__main__":
-    p = Peek('/home/setherith/server/server.jar')
-    print (p.get_version())
