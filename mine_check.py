@@ -1,5 +1,6 @@
 import requests
 import os, stat
+import logging
 from server import Server
 from peek import Peek
 from bs4 import BeautifulSoup
@@ -7,26 +8,34 @@ from packaging import version
 
 class MineChecker: 
 
+    logger: logging.Logger = None
+
     def __init__(self):
+        # setting up logging...
+        logging.basicConfig(level=logging.INFO)
+        self.logger = logging.getLogger('MineChecker')
+
         remote = self.get_online_version_and_location()
         local = Peek('/home/setherith/backup/server.jar').get_version()
-        print(f'Remote = {remote}\nLocal = {local}')
+        
         remote_version = version.parse(remote.get_version())
         local_version = version.parse(local)
-        print (remote_version, local_version, remote_version > local_version)
+        
         if remote_version > local_version:
-            print ("newer version online found...")
+            self.logger.info(f"Local version is at {local_version}")
+            self.logger.info(f"Online version is at {remote_version}")
             self.download(remote)
         else:
-            print ("version is current or newer?")
+            self.logger.info("Local version is up to date!")
 
     def download(self, server: Server):
-        print("downloading server jar...")
+        self.logger.info("Downloading latest version...")
+        self.logger.debug(f"URL: {server.location}")
         server_stream = requests.get(server.location)
         with open('server.jar', 'wb') as server_file:
             server_file.write(server_stream.content)
-            print("saved server jar to filesystem...")
-            print("making executable...")
+            self.logger.info("Download complete!")
+            self.logger.info("Making file executable...")
             os.chmod('server.jar', stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IROTH | stat.S_IRGRP)
 
     def get_online_version_and_location(self):
@@ -45,8 +54,8 @@ class MineChecker:
                         found_server = Server(title, location)
                         return found_server
         else:
-            print("Server page unavailable, perhaps down?")
-            print("Consider checking: " + url)
+            self.logger.warn("Server page unavailable")
+            self.logger.debug(f"URL: {url}")
         return None
 
 if __name__ == "__main__":
