@@ -2,6 +2,9 @@ use std::fs;
 use std::io::{copy, Read};
 use std::fs::File;
 
+#[cfg(unix)]
+use std::os::unix::fs::PermissionsExt;
+
 use sha1::{Digest, Sha1};
 use reqwest::blocking;
 
@@ -10,6 +13,16 @@ pub fn download_file(src: String, dest: &str) {
     let mut file = File::create(&dest).expect("Failed");
 
     copy(&mut file_data, &mut file).expect("Failed");
+
+    #[cfg(unix)]
+    // setting permissions (rwxr-xr-x)
+    set_permissions(&dest);
+}
+
+fn set_permissions(dest: &str) {
+    let mode = 0o755;
+    let permissions = fs::Permissions::from_mode(mode);
+    fs::set_permissions(&dest, permissions).expect("Failed");
 }
 
 fn sha1_check(path: &str, checksum: &str) -> bool {

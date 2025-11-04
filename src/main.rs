@@ -1,6 +1,7 @@
 mod structs;
 mod web;
 mod file;
+mod settings;
 
 //TODO: Wrap in Docker?
 //TODO: Build a web app front end
@@ -13,16 +14,18 @@ mod file;
     // show log data from service
 
 fn main() {
+    // load settings from file
+    let settings = settings::load_settings();
+
     // find the latest copy
     let current_version_url = web::get_manifest_url();
     let meta = web::get_download_details(current_version_url);
 
     // download the file
-    let path = String::from("./server.jar");
-    file::download_file(meta.url, &path);
+    file::download_file(meta.url, &settings.local_server_location);
 
     // check integrity
-    let download_is_safe = file::check_integrity(&path, 
+    let download_is_safe = file::check_integrity(&settings.local_server_location, 
         &meta.sha1, 
         meta.size);
 
@@ -35,7 +38,6 @@ fn main() {
             // exit process
             // move old version to archive folder
             // check archive for limit and delete versions outside of retention policy
-            // chmod new version
             // restart service
             // record newest version in json file 
 

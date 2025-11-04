@@ -1,4 +1,0 @@
-{
-	"logging_level": "INFO",
-	"local_server_location": "/home/setherith/server/server.jar"
-}
