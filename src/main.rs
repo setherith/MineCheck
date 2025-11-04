@@ -77,4 +77,15 @@ fn main() {
         println!("SHA1 does NOT match \u{274E}");
     }
 
+    // check the local version - either contents of the zip or record in json file
+    // if local is less than latest then replace
+        // schedule replacement
+            // find running instances
+            // exit process
+            // move old version to archive folder
+            // check archive for limit and delete versions outside of retention policy
+            // chmod new version
+            // restart service
+            // record newest version in json file 
+
 }
