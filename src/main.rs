@@ -1,4 +1,3 @@
-
 use std::fs;
 use std::io::{copy, Read};
 use std::fs::File;
@@ -10,6 +9,16 @@ use crate::structs::Infomation;
 use crate::structs::Manifest;
 
 mod structs;
+
+//TODO: Wrap in Docker?
+//TODO: Build a web app front end
+    // With ability to check for updates now
+    // replace current version with latest now
+    // modify schedule
+    // modify rentension policy
+    // provide backup of world data
+    // add mods to game or fetch latest
+    // show log data from service
 
 fn main() {
     let response = blocking::get("https://launchermeta.mojang.com/mc/game/version_manifest.json").ok();
