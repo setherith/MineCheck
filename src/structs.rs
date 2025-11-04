@@ -19,7 +19,7 @@ pub struct Manifest {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Server {
+pub struct FileMeta {
     pub sha1: String,
     pub size: u64,
     pub url: String,
@@ -27,7 +27,8 @@ pub struct Server {
 
 #[derive(Debug, Deserialize)]
 pub struct Downloads {
-    pub server: Server,
+    #[serde(rename = "server")]
+    pub meta: FileMeta,
 }
 
 #[derive(Debug, Deserialize)]
