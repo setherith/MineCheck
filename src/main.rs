@@ -2,6 +2,7 @@ mod structs;
 mod web;
 mod file;
 mod settings;
+mod process;
 
 //TODO: Wrap in Docker?
 //TODO: Build a web app front end
@@ -30,15 +31,19 @@ fn main() {
         meta.size);
 
     println!("Download integrity: {download_is_safe}");
-
+    
     // check the local version - either contents of the zip or record in json file
     // if local is less than latest then replace
-        // schedule replacement
-            // find running instances
-            // exit process
-            // move old version to archive folder
-            // check archive for limit and delete versions outside of retention policy
-            // restart service
-            // record newest version in json file 
+    // schedule replacement
+    
+    // find running instances
+    // exit process
+    let found = process::find_and_terminate_process(&settings.command_fragment);
+    println!("Terminated existing instances: {}", found);
+
+    // move old version to archive folder
+    // check archive for limit and delete versions outside of retention policy
+    // restart service
+    // record newest version in json file 
 
 }

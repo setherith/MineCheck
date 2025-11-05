@@ -4,6 +4,7 @@ use std::{fs::File, io::{BufReader}};
 #[derive(Debug, Deserialize)]
 pub struct Settings {
     pub local_server_location: String,
+    pub command_fragment: String,
 }
 
 pub fn load_settings() -> Settings {
